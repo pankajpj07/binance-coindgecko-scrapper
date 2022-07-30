@@ -1,6 +1,7 @@
 const writeFileSync = require("fs").writeFileSync;
-const onlyUSDT = false;
-const volPercent = 50;
+const minVolPercent = 50;
+const maxVolPercent = 10000;
+const coinPairs = ["USDT", "BUSD", "BTC"];
 /**
  * @class Standings
  */
@@ -45,7 +46,6 @@ module.exports = class Standings {
       })
     );
     this.dataWithoutNull = this.standings.filter((coin) => coin[1] !== 0);
-    console.log(this.dataWithoutNull);
     this.structuredData = this.dataWithoutNull.map((coin) => [
       coin[0].replace("...", "").trim(),
       coin[1].replace(/\n/g, "").trim(),
@@ -54,13 +54,19 @@ module.exports = class Standings {
       parseFloat(coin[4].replace(/[\n$,]/g, "")),
     ]);
     this.finalData = this.structuredData.filter(
-      (coin) => (coin[4] / coin[3]) * 100 > volPercent && coin[3] !== 0
+      (coin) =>
+        (coin[4] / coin[3]) * 100 > minVolPercent &&
+        (coin[4] / coin[3]) * 100 < maxVolPercent &&
+        coin[3] !== 0
     );
-    if (onlyUSDT) {
-      this.finalData = this.finalData.filter((coin) =>
-        coin[1].includes("USDT")
+    coinPairs.map((pair) => {
+      this.coinPairData = this.finalData.filter((coin) =>
+        coin[1].includes(`${pair}`)
       );
-    }
+      console.log(pair, this.coinPairData);
+      writeFileSync(`./data/${pair}.json`, JSON.stringify(this.coinPairData));
+    });
+
     this.finalData.sort((a, b) => a[2] - b[2]);
     this.writeToJson();
     return this.finalData;

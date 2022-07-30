@@ -11,7 +11,7 @@ const Email = require("./utils/email");
 
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
     });
 
     page = await browser.newPage();
