@@ -1,12 +1,12 @@
 const nodemailer = require("nodemailer");
-const user = "dztheman14@gmail.com";
+const user = "pankaj.pj735@gmail.com";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user,
-    pass: ""
-  }
+    pass: "pankajjj",
+  },
 });
 
 /**
@@ -23,7 +23,7 @@ class Email {
       to: user,
       from: user,
       subject: error ? "Scraper Error" : "Scraper Results",
-      html: msg
+      html: msg,
     });
 
     console.log(`Alert sent successfully.`);

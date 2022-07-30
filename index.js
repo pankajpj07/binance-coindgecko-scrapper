@@ -11,7 +11,7 @@ const Email = require("./utils/email");
 
   try {
     browser = await puppeteer.launch({
-      headless: false
+      headless: true,
     });
 
     page = await browser.newPage();
@@ -24,7 +24,8 @@ const Email = require("./utils/email");
     // await Email.send(
     //   `<ul style="list-style:none;">
     //     ${standings.map(
-    //       ([team, points], i) => `<li>${i + 1}: ${team} ${points}</li>`
+    //       ([coin, price, marketcap, volume24h], i) =>
+    //         `<li>${coin}: $${price} $${marketcap} $${volume24h}</li>`
     //     )}
     //   </ul>`.replace(/\,/g, "")
     // );
