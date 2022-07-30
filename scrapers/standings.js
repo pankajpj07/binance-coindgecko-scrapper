@@ -1,5 +1,6 @@
 const writeFileSync = require("fs").writeFileSync;
 const onlyUSDT = false;
+const volPercent = 50;
 /**
  * @class Standings
  */
@@ -53,7 +54,7 @@ module.exports = class Standings {
       parseFloat(coin[4].replace(/[\n$,]/g, "")),
     ]);
     this.finalData = this.structuredData.filter(
-      (coin) => coin[3] < coin[4] && coin[3] !== 0
+      (coin) => (coin[4] / coin[3]) * 100 > volPercent && coin[3] !== 0
     );
     if (onlyUSDT) {
       this.finalData = this.finalData.filter((coin) =>
