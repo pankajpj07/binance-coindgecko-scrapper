@@ -1,4 +1,4 @@
-# COdegecko webscrapper
+# Codegecko webscrapper
 
 
 ## Use
