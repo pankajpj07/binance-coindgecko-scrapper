@@ -1,5 +1,5 @@
 const writeFileSync = require("fs").writeFileSync;
-const onlyUSDT = false;
+const onlyUSDT = true;
 /**
  * @class Standings
  */
@@ -45,7 +45,7 @@ module.exports = class Standings {
     );
     this.dataWithoutNull = this.standings.filter((item) => item[1] !== 0);
     this.structuredData = this.dataWithoutNull.map((item) => [
-      item[0],
+      item[0].replace("...", "").trim(),
       item[1].replace(/\n/g, "").trim(),
       parseFloat(item[2].replace(/[$,]/g, "")),
       parseFloat(item[3].replace(/[$,]/g, "")),
@@ -57,6 +57,7 @@ module.exports = class Standings {
         item[1].includes("USDT")
       );
     }
+    this.finalData.sort((a, b) => a[2] - b[2]);
     this.writeToJson();
     return this.finalData;
   }
