@@ -1,5 +1,5 @@
 const writeFileSync = require("fs").writeFileSync;
-
+const onlyUSDT = false;
 /**
  * @class Standings
  */
@@ -29,19 +29,11 @@ module.exports = class Standings {
         const getData = (child) => {
           let temp = [];
           switch (child) {
-            case 3:
-              temp = team.querySelector(`td:nth-child(${child})>div`);
-              break;
-            case 5:
-              temp = team.querySelector(`td:nth-child(${child})>div`);
-              break;
-            case 9:
-              temp = team.querySelector(`td:nth-child(${child})>div`);
-              break;
             case 4:
               temp = team.querySelector(`td:nth-child(${child})>a`);
               break;
             default:
+              temp = team.querySelector(`td:nth-child(${child})>div`);
               break;
           }
           return temp ? temp.innerHTML : 0;
@@ -58,6 +50,11 @@ module.exports = class Standings {
       parseFloat(item[3].replace(/[\n$,]/g, "")),
     ]);
     this.finalData = this.structuredData.filter((item) => item[2] < item[3]);
+    if (onlyUSDT) {
+      this.finalData = this.finalData.filter((item) =>
+        item[0].includes("USDT")
+      );
+    }
     this.writeToJson();
     return this.finalData;
   }
