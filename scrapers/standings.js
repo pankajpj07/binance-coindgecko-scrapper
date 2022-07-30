@@ -30,6 +30,7 @@ module.exports = class Standings {
           let temp = [];
           switch (child) {
             case 4:
+            case 2:
               temp = team.querySelector(`td:nth-child(${child})>a`);
               break;
             default:
@@ -39,20 +40,21 @@ module.exports = class Standings {
           return temp ? temp.innerHTML : 0;
         };
 
-        return [getData(4), getData(5), getData(3), getData(9)];
+        return [getData(2), getData(4), getData(5), getData(3), getData(9)];
       })
     );
-    this.dataWithoutNull = this.standings.filter((item) => item[0] !== 0);
+    this.dataWithoutNull = this.standings.filter((item) => item[1] !== 0);
     this.structuredData = this.dataWithoutNull.map((item) => [
-      item[0].replace(/\n/g, "").trim(),
-      parseFloat(item[1].replace(/[$,]/g, "")),
+      item[0],
+      item[1].replace(/\n/g, "").trim(),
       parseFloat(item[2].replace(/[$,]/g, "")),
-      parseFloat(item[3].replace(/[\n$,]/g, "")),
+      parseFloat(item[3].replace(/[$,]/g, "")),
+      parseFloat(item[4].replace(/[\n$,]/g, "")),
     ]);
-    this.finalData = this.structuredData.filter((item) => item[2] < item[3]);
+    this.finalData = this.structuredData.filter((item) => item[3] < item[4]);
     if (onlyUSDT) {
       this.finalData = this.finalData.filter((item) =>
-        item[0].includes("USDT")
+        item[1].includes("USDT")
       );
     }
     this.writeToJson();
